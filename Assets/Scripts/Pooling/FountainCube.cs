@@ -19,6 +19,8 @@ public class FountainCube : MonoBehaviour
 	{
 		transform.localPosition = new Vector3(Random.Range(-spawnRadius, spawnRadius), 0.0f, Random.Range(-spawnRadius, spawnRadius));
 		rb.AddForce(new Vector3(Random.Range(-spawnForce.x, spawnForce.x), spawnForce.y, Random.Range(-spawnForce.z, spawnForce.z)));
+
+		this.DisableAfterDelay(2.0f);
 	}
 
 	private void OnDisable()
