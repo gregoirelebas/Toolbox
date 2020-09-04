@@ -3,32 +3,35 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(GenerateCity))]
-public class GenerateRandomCityEditor : Editor
+namespace Toolbox
 {
-	private GenerateCity city = null;
-
-	private void Awake()
+	[CustomEditor(typeof(GenerateCity))]
+	public class GenerateRandomCityEditor : Editor
 	{
-		city = serializedObject.targetObject as GenerateCity;
-	}
+		private GenerateCity city = null;
 
-	public override void OnInspectorGUI()
-	{
-		base.OnInspectorGUI();
-
-		EditorGUILayout.Space();
-
-		if (GUILayout.Button("Generate"))
+		private void Awake()
 		{
-			city.Generate();			
+			city = serializedObject.targetObject as GenerateCity;
 		}
 
-		EditorGUILayout.Space();
-
-		if (GUILayout.Button("Clear"))
+		public override void OnInspectorGUI()
 		{
-			city.Clear();
+			base.OnInspectorGUI();
+
+			EditorGUILayout.Space();
+
+			if (GUILayout.Button("Generate"))
+			{
+				city.Generate();
+			}
+
+			EditorGUILayout.Space();
+
+			if (GUILayout.Button("Clear"))
+			{
+				city.Clear();
+			}
 		}
 	}
 }

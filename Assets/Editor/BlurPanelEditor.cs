@@ -4,31 +4,33 @@ using UnityEditor;
 using UnityEditor.UI;
 using UnityEngine;
 
-[CustomEditor(typeof(BlurPanel))]
-public class BlurPanelEditor : ImageEditor
+namespace Toolbox
 {
-	private SerializedProperty isAnimated;
-
-	public override void OnInspectorGUI()
+	[CustomEditor(typeof(BlurPanel))]
+	public class BlurPanelEditor : ImageEditor
 	{
-		base.OnInspectorGUI();
+		private SerializedProperty isAnimated;
 
-
-		EditorGUI.BeginChangeCheck();
-
-		EditorGUILayout.PropertyField(serializedObject.FindProperty("blurValue"));
-		EditorGUILayout.PropertyField(serializedObject.FindProperty("delay"));
-
-		isAnimated = serializedObject.FindProperty("isAnimated");
-		EditorGUILayout.PropertyField(isAnimated);
-		if (isAnimated.boolValue)
+		public override void OnInspectorGUI()
 		{
-			EditorGUILayout.PropertyField(serializedObject.FindProperty("time"));
-		}
+			base.OnInspectorGUI();
 
-		if (EditorGUI.EndChangeCheck())
-		{
-			serializedObject.ApplyModifiedProperties();
+			EditorGUI.BeginChangeCheck();
+
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("blurValue"));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("delay"));
+
+			isAnimated = serializedObject.FindProperty("isAnimated");
+			EditorGUILayout.PropertyField(isAnimated);
+			if (isAnimated.boolValue)
+			{
+				EditorGUILayout.PropertyField(serializedObject.FindProperty("time"));
+			}
+
+			if (EditorGUI.EndChangeCheck())
+			{
+				serializedObject.ApplyModifiedProperties();
+			}
 		}
 	}
 }
