@@ -78,7 +78,7 @@ namespace Toolbox
     public static class LerpHelper
     {
         /// <summary>
-        /// Lerp using lerp type, based on deltaTime
+        /// Lerp using lerp type, based on deltaTime.
         /// </summary>
         private static IEnumerator LerpRoutine(LerpType lerpType, LerpInfos infos, LerpPoints points, float lerpTime)
         {
@@ -223,7 +223,7 @@ namespace Toolbox
         }
 
         /// <summary>
-        /// Lerp quaternion from [start] to [end] in [time] seconds. If startNow is false, ResumeLerp() function will be needed to start coroutine.
+        /// Lerp int from [start] to [end] in [time] seconds. If startNow is false, ResumeLerp() function will be needed to start coroutine.
         /// </summary>
         public static LerpData SetLerp(MonoBehaviour owner, int start, int end, float time, bool startNow = true)
         {
@@ -251,7 +251,7 @@ namespace Toolbox
         }
 
         /// <summary>
-        /// Lerp quaternion from [start] to [end] in [time] seconds. If startNow is false, ResumeLerp() function will be needed to start coroutine.
+        /// Lerp float from [start] to [end] in [time] seconds. If startNow is false, ResumeLerp() function will be needed to start coroutine.
         /// </summary>
         public static LerpData SetLerp(MonoBehaviour owner, float start, float end, float time, bool startNow = true)
         {
@@ -279,7 +279,7 @@ namespace Toolbox
         }
 
         /// <summary>
-        /// Lerp quaternion from [start] to [end] in [time] seconds. If startNow is false, ResumeLerp() function will be needed to start coroutine.
+        /// Lerp double from [start] to [end] in [time] seconds. If startNow is false, ResumeLerp() function will be needed to start coroutine.
         /// </summary>
         public static LerpData SetLerp(MonoBehaviour owner, double start, double end, float time, bool startNow = true)
         {
@@ -330,7 +330,7 @@ namespace Toolbox
         }
 
         /// <summary>
-        /// Stop lerp coroutine. If reset, reset infos except coroutine reference.
+        /// Stop lerp coroutine. If [reset], reset lerp infos except coroutine reference.
         /// </summary>
         public static void StopLerp(MonoBehaviour owner, LerpData data, bool reset = false)
         {
