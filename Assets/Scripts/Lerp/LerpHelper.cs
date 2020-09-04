@@ -141,7 +141,7 @@ namespace Toolbox
         /// <summary>
         /// Lerp vector2 from [start] to [end] in [time] seconds. If startNow is false, ResumeLerp() function will be needed to start coroutine.
         /// </summary>
-        public static LerpData SetLerp(MonoBehaviour owner, Vector2 start, Vector2 end, float time, bool startNow = true)
+        public static LerpData SetLerp(this MonoBehaviour owner, Vector2 start, Vector2 end, float time, bool startNow = true)
         {
             LerpInfos infos = new LerpInfos();
             infos.vec2 = start;
@@ -169,7 +169,7 @@ namespace Toolbox
         /// <summary>
         /// Lerp vector3 from [start] to [end] in [time] seconds. If startNow is false, ResumeLerp() function will be needed to start coroutine.
         /// </summary>
-        public static LerpData SetLerp(MonoBehaviour owner, Vector3 start, Vector3 end, float time, bool startNow = true)
+        public static LerpData SetLerp(this MonoBehaviour owner, Vector3 start, Vector3 end, float time, bool startNow = true)
         {
             LerpInfos infos = new LerpInfos();
             infos.vec3 = start;
@@ -197,7 +197,7 @@ namespace Toolbox
         /// <summary>
         /// Lerp quaternion from [start] to [end] in [time] seconds. If startNow is false, ResumeLerp() function will be needed to start coroutine.
         /// </summary>
-        public static LerpData SetLerp(MonoBehaviour owner, Quaternion start, Quaternion end, float time, bool startNow = true)
+        public static LerpData SetLerp(this MonoBehaviour owner, Quaternion start, Quaternion end, float time, bool startNow = true)
         {
             LerpInfos infos = new LerpInfos();
             infos.quat = start;
@@ -225,7 +225,7 @@ namespace Toolbox
         /// <summary>
         /// Lerp int from [start] to [end] in [time] seconds. If startNow is false, ResumeLerp() function will be needed to start coroutine.
         /// </summary>
-        public static LerpData SetLerp(MonoBehaviour owner, int start, int end, float time, bool startNow = true)
+        public static LerpData SetLerp(this MonoBehaviour owner, int start, int end, float time, bool startNow = true)
         {
             LerpInfos infos = new LerpInfos();
             infos.@int = start;
@@ -253,7 +253,7 @@ namespace Toolbox
         /// <summary>
         /// Lerp float from [start] to [end] in [time] seconds. If startNow is false, ResumeLerp() function will be needed to start coroutine.
         /// </summary>
-        public static LerpData SetLerp(MonoBehaviour owner, float start, float end, float time, bool startNow = true)
+        public static LerpData SetLerp(this MonoBehaviour owner, float start, float end, float time, bool startNow = true)
         {
             LerpInfos infos = new LerpInfos();
             infos.@float = start;
@@ -281,7 +281,7 @@ namespace Toolbox
         /// <summary>
         /// Lerp double from [start] to [end] in [time] seconds. If startNow is false, ResumeLerp() function will be needed to start coroutine.
         /// </summary>
-        public static LerpData SetLerp(MonoBehaviour owner, double start, double end, float time, bool startNow = true)
+        public static LerpData SetLerp(this MonoBehaviour owner, double start, double end, float time, bool startNow = true)
         {
             LerpInfos infos = new LerpInfos();
             infos.@double = start;
@@ -309,7 +309,7 @@ namespace Toolbox
         /// <summary>
         /// Resume lerp where it was stopped. If lerp was finished, restart from zero.
         /// </summary>
-        public static void ResumeLerp(MonoBehaviour owner, LerpData data)
+        public static void ResumeLerp(this MonoBehaviour owner, LerpData data)
         {
             if (data.lerpRoutine != null)
             {
@@ -332,7 +332,7 @@ namespace Toolbox
         /// <summary>
         /// Stop lerp coroutine. If [reset], reset lerp infos except coroutine reference.
         /// </summary>
-        public static void StopLerp(MonoBehaviour owner, LerpData data, bool reset = false)
+        public static void StopLerp(this MonoBehaviour owner, LerpData data, bool reset = false)
         {
             owner.StopCoroutine(data.lerpRoutine);
             data.infos.isRunning = false;
