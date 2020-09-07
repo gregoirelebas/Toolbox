@@ -13,10 +13,9 @@ public class EditorSceneLoader : EditorWindow
 	private bool loadScene = true;
 
 	[MenuItem("Window/SceneLoader")]
-	private static void Init()
+	private static void LoadWindow()
 	{
 		window = GetWindow<EditorSceneLoader>("Scene loader", true);
-		window.Show();
 	}
 
 	public void OnGUI()
@@ -57,9 +56,7 @@ public class EditorSceneLoader : EditorWindow
 
 			GUILayout.BeginHorizontal();
 
-			float windowWidth = window.position.width;
-
-			if (GUILayout.Button(name, GUILayout.Width(windowWidth * 0.75f)))
+			if (GUILayout.Button(name, GUILayout.Width(position.width * 0.75f)))
 			{
 				EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
 
@@ -90,7 +87,7 @@ public class EditorSceneLoader : EditorWindow
 				{
 					GUI.color = Color.red;
 
-					if (GUILayout.Button(loadScene ? "Sub" : "Unload", GUILayout.Width(windowWidth * 0.25f)))
+					if (GUILayout.Button(loadScene ? "Sub" : "Unload", GUILayout.Width(position.width * 0.25f)))
 					{
 						if ((SceneManager.sceneCount > 1  && loadScene) || (loadSceneCount > 1 && !loadScene))
 						{
@@ -102,7 +99,7 @@ public class EditorSceneLoader : EditorWindow
 				{
 					GUI.color = oldColor;
 
-					if (GUILayout.Button(loadScene ? "Add" : "Load", GUILayout.Width(windowWidth * 0.25f)))
+					if (GUILayout.Button(loadScene ? "Add" : "Load", GUILayout.Width(position.width * 0.25f)))
 					{
 						EditorSceneManager.OpenScene(scene.path, loadScene ? OpenSceneMode.Additive : OpenSceneMode.AdditiveWithoutLoading);
 					}
