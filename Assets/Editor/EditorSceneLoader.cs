@@ -13,18 +13,14 @@ public class EditorSceneLoader : EditorWindow
 	private bool loadScene = true;
 
 	[MenuItem("Window/SceneLoader")]
-	private static void InitSceneLoader()
+	private static void Init()
 	{
 		window = GetWindow<EditorSceneLoader>("Scene loader", true);
+		window.Show();
 	}
 
 	public void OnGUI()
 	{
-		if (window == null)
-		{
-			InitSceneLoader();
-		}
-
 		scroll = EditorGUILayout.BeginScrollView(scroll);
 
 		if (loadScene)
