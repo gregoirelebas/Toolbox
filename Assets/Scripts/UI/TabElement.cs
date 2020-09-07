@@ -3,35 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TabElement : MonoBehaviour
+namespace Toolbox
 {
-	[Header("State colors")]
-    [SerializeField] private Color idleColor = Color.white;
-    [SerializeField] private Color hoverColor = Color.grey;
-    [SerializeField] private Color activeColor = Color.black;
-
-	private Graphic graphic = null;
-
-	protected virtual void Awake()
+	public class TabElement : MonoBehaviour
 	{
-		graphic = GetComponent<Graphic>();
+		[Header("State colors")]
+		[SerializeField] private Color idleColor = Color.white;
+		[SerializeField] private Color hoverColor = Color.grey;
+		[SerializeField] private Color activeColor = Color.black;
 
-		SetIdle();
-	}
+		private Graphic graphic = null;
 
-	public void SetIdle()
-	{
-		graphic.color = idleColor;
-	}
+		protected virtual void Awake()
+		{
+			graphic = GetComponent<Graphic>();
 
-    public void SetHover()
-	{
-		graphic.color = hoverColor;
-	}
+			SetIdle();
+		}
 
-    public void SetActive()
+		public void SetIdle()
+		{
+			graphic.color = idleColor;
+		}
 
-    {
-		graphic.color = activeColor;
+		public void SetHover()
+		{
+			graphic.color = hoverColor;
+		}
+
+		public void SetActive()
+
+		{
+			graphic.color = activeColor;
+		}
 	}
 }
