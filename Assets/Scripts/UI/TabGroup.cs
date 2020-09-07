@@ -6,11 +6,6 @@ namespace Toolbox
 {
 	public class TabGroup : MonoBehaviour
 	{
-		[Header("State sprites")]
-		[SerializeField] private Sprite idleTabSprite = null;
-		[SerializeField] private Sprite hoverTabSprite = null;
-		[SerializeField] private Sprite activeTabSprite = null;
-
 		private List<TabButton> buttons = null;
 		private TabButton selected = null;
 
@@ -30,7 +25,7 @@ namespace Toolbox
 
 			if (!button.Equals(selected))
 			{
-				button.background.sprite = hoverTabSprite;
+				button.Hover();
 			}
 		}
 
@@ -39,22 +34,11 @@ namespace Toolbox
 			selected?.Deselect();
 			selected = button;
 			selected?.Select();
-
-			ResetTabs();
-
-			button.background.sprite = activeTabSprite;
-
-			foreach (TabButton currentButton in buttons)
-			{
-				currentButton.SetPanelActive(false);
-			}
-
-			button.SetPanelActive(true);
 		}
 
 		public void OnTabExit(TabButton button)
 		{
-			ResetTabs();
+			button.Deselect();
 		}
 
 		public void ResetTabs()
@@ -63,7 +47,7 @@ namespace Toolbox
 			{
 				if (!button.Equals(selected))
 				{
-					button.background.sprite = idleTabSprite;
+					button.Deselect();
 				}
 			}
 		}
