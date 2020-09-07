@@ -29,21 +29,23 @@ namespace Toolbox
 		private void Start()
 		{
 			group.Subscribe(this);
+
+			Deselect();
 		}
 
 		public void OnPointerEnter(PointerEventData eventData)
 		{
-			group.OnTabEnter(this);
+			group.OnPointerEnter(this);
 		}
 		
 		public void OnPointerClick(PointerEventData eventData)
 		{
-			group.OnTabSelected(this);
+			group.OnPointerClick(this);
 		}
 
 		public void OnPointerExit(PointerEventData eventData)
 		{
-			group.OnTabExit(this);
+			group.OnPointerExit(this);
 		}
 
 		public void Select()

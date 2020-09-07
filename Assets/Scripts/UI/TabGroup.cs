@@ -19,26 +19,27 @@ namespace Toolbox
 			buttons.Add(button);
 		}
 
-		public void OnTabEnter(TabButton button)
+		public void OnPointerEnter(TabButton button)
 		{
-			ResetTabs();
-
 			if (!button.Equals(selected))
 			{
 				button.Hover();
 			}
 		}
 
-		public void OnTabSelected(TabButton button)
+		public void OnPointerClick(TabButton button)
 		{
 			selected?.Deselect();
 			selected = button;
-			selected?.Select();
+			selected.Select();
 		}
 
-		public void OnTabExit(TabButton button)
+		public void OnPointerExit(TabButton button)
 		{
-			button.Deselect();
+			if (!button.Equals(selected))
+			{
+				button.Deselect();
+			}
 		}
 
 		public void ResetTabs()
