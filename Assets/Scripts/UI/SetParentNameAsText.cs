@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 namespace Toolbox
 {
+	[ExecuteInEditMode]
 	public class SetParentNameAsText : MonoBehaviour
 	{
 		[SerializeField] private bool useTMP = true;
@@ -21,5 +22,12 @@ namespace Toolbox
 				GetComponent<Text>().text = transform.parent.name;
 			}
 		}
+
+#if UNITY_EDITOR
+		private void Update()
+		{
+			Awake();
+		}
+#endif
 	}
 }
