@@ -7,9 +7,11 @@ namespace Toolbox
 {
 	public class FlexibleGridLayout : LayoutGroup
 	{
-		[SerializeField] private int rows = 1;
-		[SerializeField] private int cols = 1;
-		[SerializeField] private Vector2 cellSize = Vector2.one;
+		[SerializeField] private Vector2 spacing = Vector2.zero;
+		
+		private int rows = 1;
+		private int columns = 1;
+		private Vector2 cellSize = Vector2.one;
 
 		public override void CalculateLayoutInputHorizontal()
 		{
@@ -17,25 +19,25 @@ namespace Toolbox
 
 			float sqrt = Mathf.Sqrt(transform.childCount);
 			rows = Mathf.CeilToInt(sqrt);
-			cols = Mathf.CeilToInt(sqrt);
+			columns = Mathf.CeilToInt(sqrt);
 
 			float parentWidth = rectTransform.rect.width;
 			float parentHeight = rectTransform.rect.height;
 
-			cellSize.x = parentWidth / rows;
-			cellSize.y = parentHeight / cols;
+			cellSize.x = (parentWidth / columns) - (spacing.x / columns * 2.0f) - (padding.left / columns) - (padding.right / columns);
+			cellSize.y = (parentHeight / rows) - (spacing.y / rows * 2.0f) - (padding.top / rows) - (padding.bottom / rows); ;
 
 			int rowCount;
-			int colCount;
+			int columnCount;
 
 			for (int i = 0; i < rectChildren.Count; i++)
 			{
-				rowCount = i / cols;
-				colCount = i % cols;
+				rowCount = i / columns;
+				columnCount = i % columns;
 
 				RectTransform item = rectChildren[i];
-				float xPos = cellSize.x * colCount;
-				float yPos = cellSize.y * rowCount;
+				float xPos = (cellSize.x * columnCount) + (spacing.x * columnCount) + padding.left;
+				float yPos = cellSize.y * rowCount + (spacing.y * rowCount) + padding.top;
 
 				SetChildAlongAxis(item, 0, xPos, cellSize.x);
 				SetChildAlongAxis(item, 1, yPos, cellSize.y);
