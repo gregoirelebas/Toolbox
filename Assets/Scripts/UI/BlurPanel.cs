@@ -15,15 +15,12 @@ namespace Toolbox
 		[SerializeField] private bool isAnimated = true;
 		[SerializeField] private float time = 0.5f;
 
-		private MonoBehaviour mono = null;
 		private CanvasGroup group = null;
-		private LerpData blurLerp = null;
 
 		protected override void Awake()
 		{
 			base.Awake();
 
-			mono = gameObject.GetComponent<MonoBehaviour>();
 			group = GetComponent<CanvasGroup>();
 		}
 
@@ -47,19 +44,7 @@ namespace Toolbox
 
 					this.DelayedAction(() =>
 					{
-						blurLerp = LerpHelper.SetLerp(mono, 0.0f, blurValue, time);
-
-						this.DoActionOnTick(() =>
-						{
-							if (blurLerp != null && blurLerp.infos.isRunning)
-							{
-								SetBlurValue(blurLerp.infos.@float);
-							}
-							else
-							{
-								StopAllCoroutines();
-							}
-						});
+						LeanTween.value(0.0f, blurValue, time).setOnUpdate(SetBlurValue);
 					}, delay);
 				}
 				else

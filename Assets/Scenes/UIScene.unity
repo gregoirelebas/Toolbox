@@ -7069,7 +7069,7 @@ MonoBehaviour:
   blurValue: 1
   delay: 0
   isAnimated: 1
-  time: 0.5
+  time: 1
 --- !u!222 &890054826
 CanvasRenderer:
   m_ObjectHideFlags: 0
