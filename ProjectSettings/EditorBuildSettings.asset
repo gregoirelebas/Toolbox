@@ -6,12 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/LerpScene.unity
-    guid: d4f9d418bfdb2c645b9b480da14c90e7
-  - enabled: 1
     path: Assets/Scenes/PoolingScene.unity
     guid: df8049cfe3451704297120dc661956bc
   - enabled: 1
     path: Assets/Scenes/UIScene.unity
     guid: 497dc227917b4b5499e711a31c0af0b3
+  - enabled: 1
+    path: Assets/Scenes/LocalisationScene.unity
+    guid: 7dbd33f41c79f0d409530b9054cb3562
   m_configObjects: {}

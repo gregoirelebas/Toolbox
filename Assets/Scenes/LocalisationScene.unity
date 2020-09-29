@@ -346,7 +346,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db7ac46e99b140f43a65e5cfd97cb0a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: translate_me
+  localisedString:
+    key: 
 --- !u!114 &282827936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -559,7 +560,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db7ac46e99b140f43a65e5cfd97cb0a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: hello_world
+  localisedString:
+    key: hello_world
 --- !u!114 &698195638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -882,7 +884,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db7ac46e99b140f43a65e5cfd97cb0a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: working_question
+  localisedString:
+    key: 
 --- !u!114 &2143198388
 MonoBehaviour:
   m_ObjectHideFlags: 0

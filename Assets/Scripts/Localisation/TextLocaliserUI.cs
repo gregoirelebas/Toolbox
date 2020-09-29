@@ -8,14 +8,14 @@ namespace Toolbox
 	[RequireComponent(typeof(TextMeshProUGUI))]
 	public class TextLocaliserUI : MonoBehaviour
 	{
-		[SerializeField] private string key = "";
+		[SerializeField] private LocalisedString localisedString = "";
 
 		private TextMeshProUGUI textField = null;
 
 		private void Awake()
 		{
 			textField = GetComponent<TextMeshProUGUI>();
-			textField.text = LocalisationSystem.GetLocalisedValue(key);
+			textField.text = LocalisationSystem.GetLocalisedValue(localisedString.key);
 		}
 	}
 }
