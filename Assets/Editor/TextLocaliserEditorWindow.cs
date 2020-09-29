@@ -92,7 +92,7 @@ namespace Toolbox
 				{
 					EditorGUILayout.BeginHorizontal("Box");
 
-					Texture closeIcon = Resources.Load<Texture>("close");
+					Texture closeIcon = Resources.Load<Texture>("Icons/close");
 					GUIContent content = new GUIContent(closeIcon);
 
 					if (GUILayout.Button(content, GUILayout.MaxWidth(20.0f), GUILayout.MaxHeight(20.0f)))

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace Toolbox
@@ -24,7 +25,7 @@ namespace Toolbox
 		public static void Init()
 		{
 			loader = new CSVLoader();
-			loader.LoadCSVFile("localisation");
+			loader.LoadCSVFile();
 
 			UpdateDictionaries();			
 
@@ -101,7 +102,7 @@ namespace Toolbox
 				loader = new CSVLoader();
 			}
 
-			loader.LoadCSVFile("localisation");
+			loader.LoadCSVFile();
 			loader.Add(key, value);
 
 			UpdateDictionaries();
@@ -114,7 +115,7 @@ namespace Toolbox
 				loader = new CSVLoader();
 			}
 
-			loader.LoadCSVFile("localisation");
+			loader.LoadCSVFile();
 			loader.Remove(key);
 
 			UpdateDictionaries();
@@ -133,7 +134,7 @@ namespace Toolbox
 				loader = new CSVLoader();
 			}
 
-			loader.LoadCSVFile("localisation");
+			loader.LoadCSVFile();
 			loader.Edit(key, value);
 
 			UpdateDictionaries();

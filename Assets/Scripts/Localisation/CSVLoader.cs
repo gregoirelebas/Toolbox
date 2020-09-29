@@ -17,10 +17,10 @@ namespace Toolbox
 
 		private string filePath = "";
 
-		public void LoadCSVFile(string path)
+		public void LoadCSVFile()
 		{
-			filePath = "Assets/Resources/" + path + ".csv";
-			csvFile = Resources.Load<TextAsset>(path);
+			filePath = "Assets/Resources/Localisation/textLocalisation.csv";
+			csvFile = Resources.Load<TextAsset>("Localisation/textLocalisation");
 
 			if (csvFile == null)
 			{
