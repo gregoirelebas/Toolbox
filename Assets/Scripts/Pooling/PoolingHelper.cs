@@ -48,6 +48,17 @@ namespace Toolbox
 		}
 
 		/// <summary>
+		/// Allow you to disable (set active false) all GameObject in a pool
+		/// </summary>
+		public static void DisableAllInPool(string tag)
+		{
+			foreach (GameObject go in pools[tag].stock)
+			{
+				go.SetActive(false);
+			}
+		}
+
+		/// <summary>
 		/// Destroy all GameObject in pool and remove it.
 		/// </summary>
 		public static void DestroyPool(string tag)
