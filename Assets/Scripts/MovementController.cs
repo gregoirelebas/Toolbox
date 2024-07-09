@@ -40,6 +40,7 @@ public class MovementController : MonoBehaviour
     private Animator m_animator = null;
     private int m_isWalkingHash = -1;
     private int m_isRunningHash = -1;
+    private int m_isJumpingHash = -1;
 
     private void Awake()
     {
@@ -49,6 +50,7 @@ public class MovementController : MonoBehaviour
 
         m_isWalkingHash = Animator.StringToHash("isWalking");
         m_isRunningHash = Animator.StringToHash("isRunning");
+        m_isJumpingHash = Animator.StringToHash("isJumping");
 
         float timeToApex = m_maxJumpTime / 2.0f;
         m_gravity = -2.0f * m_maxJumpHeight / Mathf.Pow(timeToApex, 2);
@@ -190,10 +192,14 @@ public class MovementController : MonoBehaviour
 
                 m_currentWalkMovement.y = averageVelocity;
                 m_currentRunMovement.y = averageVelocity;
+
+                m_animator.SetBool(m_isJumpingHash, true);
             }
             else if (m_isJumping && !m_isJumpInput)
             {
                 m_isJumping = false;
+
+                m_animator.SetBool(m_isJumpingHash, false);
             }
         }
     }
