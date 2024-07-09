@@ -12,20 +12,21 @@ public class MovementController : MonoBehaviour
 
     [SerializeField] private float m_moveSpeed = 5.0f;
     [SerializeField] private float m_rotationSpeed = 10.0f;
-    [SerializeField] private float m_sprintFactor = 3.0f;
+    [SerializeField] private float m_runFactor = 3.0f;
 
     private PlayerInput m_playerInput = null;
     private CharacterController m_controller = null;
 
     private Vector2 m_currentMovementInput = Vector2.zero;
-    private Vector3 m_currentMovement = Vector3.zero;
-    private Vector3 m_currentSprintMovement = Vector3.zero;
+    private Vector3 m_currentWalkMovement = Vector3.zero;
+    private Vector3 m_currentRunMovement = Vector3.zero;
 
-    private bool m_isMoving = false;
-    private bool m_isSprinting = false;
+    private bool m_isMovement = false;
+    private bool m_isRunning = false;
 
     private Animator m_animator = null;
-    private int m_speedHash = -1;
+    private int m_isWalkingHash = -1;
+    private int m_isRunningHash = -1;
 
     private void Awake()
     {
@@ -33,7 +34,8 @@ public class MovementController : MonoBehaviour
         m_controller = GetComponent<CharacterController>();
         m_animator = GetComponent<Animator>();
 
-        m_speedHash = Animator.StringToHash("Speed");
+        m_isWalkingHash = Animator.StringToHash("isWalking");
+        m_isRunningHash = Animator.StringToHash("isRunning");
     }
 
     private void OnEnable()
@@ -62,10 +64,10 @@ public class MovementController : MonoBehaviour
 
         HandleGravity();
 
-        if (m_isSprinting)
-            m_controller.Move(m_currentSprintMovement * Time.deltaTime);
+        if (m_isRunning)
+            m_controller.Move(m_currentRunMovement * Time.deltaTime);
         else
-            m_controller.Move(m_currentMovement * Time.deltaTime);
+            m_controller.Move(m_currentWalkMovement * Time.deltaTime);
 
         HandleAnimations();
     }
@@ -74,21 +76,21 @@ public class MovementController : MonoBehaviour
     {
         m_currentMovementInput = context.ReadValue<Vector2>();
 
-        m_currentMovement.x = m_currentMovementInput.x * m_moveSpeed;
-        m_currentMovement.z = m_currentMovementInput.y * m_moveSpeed;
+        m_currentWalkMovement.x = m_currentMovementInput.x * m_moveSpeed;
+        m_currentWalkMovement.z = m_currentMovementInput.y * m_moveSpeed;
 
-        m_currentSprintMovement.x = m_currentMovementInput.x * m_moveSpeed * m_sprintFactor;
-        m_currentSprintMovement.z = m_currentMovementInput.y * m_moveSpeed * m_sprintFactor;
+        m_currentRunMovement.x = m_currentMovementInput.x * m_moveSpeed * m_runFactor;
+        m_currentRunMovement.z = m_currentMovementInput.y * m_moveSpeed * m_runFactor;
 
-        m_isMoving = m_currentMovementInput.x != 0.0f || m_currentMovementInput.y != 0.0f;
+        m_isMovement = m_currentMovementInput.x != 0.0f || m_currentMovementInput.y != 0.0f;
     }
 
     private void HandleRotation()
     {
-        if (!m_isMoving)
+        if (!m_isMovement)
             return;
 
-        Vector3 positionToLook = m_currentMovement;
+        Vector3 positionToLook = m_currentWalkMovement;
         positionToLook.y = 0.0f;
 
         Quaternion targetRotation = Quaternion.LookRotation(positionToLook);
@@ -99,33 +101,34 @@ public class MovementController : MonoBehaviour
     {
         if (m_controller.isGrounded)
         {
-            m_currentMovement.y = GROUND_GRAVITY;
-            m_currentSprintMovement.y = GROUND_GRAVITY;
+            m_currentWalkMovement.y = GROUND_GRAVITY;
+            m_currentRunMovement.y = GROUND_GRAVITY;
         }
         else
         {
-            m_currentMovement.y = AIR_GRAVITY;
-            m_currentSprintMovement.y = AIR_GRAVITY;
+            m_currentWalkMovement.y = AIR_GRAVITY;
+            m_currentRunMovement.y = AIR_GRAVITY;
         }
     }
 
     private void HandleAnimations()
     {
-        if (m_isMoving)
-        {
-            if (m_isSprinting)
-                m_animator.SetFloat(m_speedHash, 1.0f);
-            else
-                m_animator.SetFloat(m_speedHash, 0.25f);
-        }
-        else
-        {
-            m_animator.SetFloat(m_speedHash, 0.0f);
-        }
+        bool isAnimatorWalking = m_animator.GetBool(m_isWalkingHash);
+        bool isAnimatorRunning = m_animator.GetBool(m_isRunningHash);
+
+        if (m_isMovement && !isAnimatorWalking)
+            m_animator.SetBool(m_isWalkingHash, true);
+        else if (!m_isMovement && isAnimatorWalking)
+            m_animator.SetBool(m_isWalkingHash, false);
+
+        if (m_isMovement && m_isRunning && !isAnimatorRunning)
+            m_animator.SetBool(m_isRunningHash, true);
+        else if (m_isMovement && !m_isRunning && isAnimatorRunning)
+            m_animator.SetBool(m_isRunningHash, false);
     }
 
     private void OnSprint(InputAction.CallbackContext context)
     {
-        m_isSprinting = context.ReadValueAsButton();
+        m_isRunning = context.ReadValueAsButton();
     }
 }
