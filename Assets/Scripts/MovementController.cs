@@ -106,8 +106,8 @@ public class MovementController : MonoBehaviour
         }
         else
         {
-            m_currentWalkMovement.y = AIR_GRAVITY;
-            m_currentRunMovement.y = AIR_GRAVITY;
+            m_currentWalkMovement.y += AIR_GRAVITY;
+            m_currentRunMovement.y += AIR_GRAVITY;
         }
     }
 
