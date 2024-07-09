@@ -11,31 +11,32 @@ public class MovementController : MonoBehaviour
     private const float AIR_GRAVITY = -9.81f;
 
     [Header("Basic movement")]
-    [SerializeField] private float m_moveSpeed = 5.0f;
-    [SerializeField] private float m_rotationSpeed = 10.0f;
+    [SerializeField, Range(1.0f, 10.0f)] private float m_moveSpeed = 5.0f;
+    [SerializeField, Range(1.0f, 50.0f)] private float m_rotationSpeed = 10.0f;
 
     [Header("Run")]
-    [SerializeField] private float m_runFactor = 3.0f;
+    [SerializeField, Range(1.0f, 5.0f)] private float m_runFactor = 3.0f;
 
     [Header("Jump")]
-    [SerializeField] private float m_maxJumpHeight = 2.0f;
-    [SerializeField] private float m_maxJumpTime = 1.0f;
-    [SerializeField] private float m_fallFactor = 2.0f;
+    [SerializeField, Range(1.0f, 5.0f)] private float m_maxJumpHeight = 2.0f;
+    [SerializeField, Range(0.1f, 3.0f)] private float m_maxJumpTime = 1.0f;
+    [SerializeField, Range(0.1f, 5.0f)] private float m_fallFactor = 2.0f;
 
     private PlayerInput m_playerInput = null;
     private CharacterController m_controller = null;
 
-    private Vector2 m_currentMovementInput = Vector2.zero;
-    private Vector3 m_currentWalkMovement = Vector3.zero;
-    private Vector3 m_currentRunMovement = Vector3.zero;
+    private Vector2 m_moveInput = Vector2.zero;
+    private Vector3 m_currentMovement = Vector3.zero;
+    private Vector3 m_appliedMovement = Vector3.zero;
 
     private bool m_isMovement = false;
     private bool m_isRunning = false;
 
     private bool m_isJumpInput = false;
     private bool m_isJumping = false;
-    private float m_initialJumpVelocity = 10.0f;
-    private float m_gravity = AIR_GRAVITY;
+
+    private float m_gravity = 0.0f;
+    private float m_initialJumpVelocity = 0.0f;
 
     private Animator m_animator = null;
     private int m_isWalkingHash = -1;
@@ -84,11 +85,7 @@ public class MovementController : MonoBehaviour
     private void Update()
     {
         HandleRotation();
-
-        if (m_isRunning)
-            m_controller.Move(m_currentRunMovement * Time.deltaTime);
-        else
-            m_controller.Move(m_currentWalkMovement * Time.deltaTime);
+        HandleMovement();
 
         HandleGravity();
         HandleJump();
@@ -97,19 +94,16 @@ public class MovementController : MonoBehaviour
     }
 
     /// <summary>
-    /// Set walk and run movement using the context input read.
+    /// Set current movement using the context input.
     /// </summary>
     private void OnMoveInput(InputAction.CallbackContext context)
     {
-        m_currentMovementInput = context.ReadValue<Vector2>();
+        m_moveInput = context.ReadValue<Vector2>();
 
-        m_currentWalkMovement.x = m_currentMovementInput.x * m_moveSpeed;
-        m_currentWalkMovement.z = m_currentMovementInput.y * m_moveSpeed;
+        m_currentMovement.x = m_moveInput.x * m_moveSpeed;
+        m_currentMovement.z = m_moveInput.y * m_moveSpeed;
 
-        m_currentRunMovement.x = m_currentMovementInput.x * m_moveSpeed * m_runFactor;
-        m_currentRunMovement.z = m_currentMovementInput.y * m_moveSpeed * m_runFactor;
-
-        m_isMovement = m_currentMovementInput.x != 0.0f || m_currentMovementInput.y != 0.0f;
+        m_isMovement = m_moveInput.x != 0.0f || m_moveInput.y != 0.0f;
     }
 
     /// <summary>
@@ -136,7 +130,7 @@ public class MovementController : MonoBehaviour
         if (!m_isMovement)
             return;
 
-        Vector3 positionToLook = m_currentWalkMovement;
+        Vector3 positionToLook = m_currentMovement;
         positionToLook.y = 0.0f;
 
         Quaternion targetRotation = Quaternion.LookRotation(positionToLook);
@@ -144,34 +138,46 @@ public class MovementController : MonoBehaviour
     }
 
     /// <summary>
-    /// Set gravity if grounded or increase gravity if mid air.
+    /// Move the character controller using current movement.
     /// </summary>
-    private void HandleGravity()
+    private void HandleMovement()
     {
-        bool isFalling = m_currentWalkMovement.y <= 0.0f || !m_isJumpInput;
-
-        if (m_controller.isGrounded)
+        if (m_isRunning)
         {
-            m_currentWalkMovement.y = GROUND_GRAVITY;
-            m_currentRunMovement.y = GROUND_GRAVITY;
-        }
-        else if (isFalling)
-        {
-            float previousVelocity = m_currentWalkMovement.y;
-            float newVelocity = m_currentWalkMovement.y + m_gravity * m_fallFactor * Time.deltaTime;
-            float averageVelocity = (previousVelocity + newVelocity) / 2.0f;
-
-            m_currentWalkMovement.y = averageVelocity;
-            m_currentRunMovement.y = averageVelocity;
+            m_appliedMovement.x = m_currentMovement.x * m_runFactor;
+            m_appliedMovement.z = m_currentMovement.z * m_runFactor;
         }
         else
         {
-            float oldVelocity = m_currentWalkMovement.y;
-            float newVelocity = m_currentWalkMovement.y + m_gravity * Time.deltaTime;
-            float averageVelocity = (oldVelocity + newVelocity) / 2.0f;
+            m_appliedMovement.x = m_currentMovement.x;
+            m_appliedMovement.z = m_currentMovement.z;
+        }
 
-            m_currentWalkMovement.y = averageVelocity;
-            m_currentRunMovement.y = averageVelocity;
+        m_controller.Move(m_appliedMovement * Time.deltaTime);
+    }
+
+    /// <summary>
+    /// Set gravity velocity to current movement.
+    /// </summary>
+    private void HandleGravity()
+    {
+        bool isFalling = m_currentMovement.y <= 0.0f || !m_isJumpInput;
+
+        if (m_controller.isGrounded)
+        {
+            m_currentMovement.y = GROUND_GRAVITY;
+            m_appliedMovement.y = GROUND_GRAVITY;
+        }
+        else
+        {
+            float previousVelocity = m_currentMovement.y;
+
+            if (isFalling)
+                m_currentMovement.y += m_gravity * m_fallFactor * Time.deltaTime;
+            else
+                m_currentMovement.y += m_gravity * Time.deltaTime;
+
+            m_appliedMovement.y = (previousVelocity + m_currentMovement.y) / 2.0f;
         }
     }
 
@@ -186,12 +192,8 @@ public class MovementController : MonoBehaviour
             {
                 m_isJumping = true;
 
-                float previousVelocity = m_currentWalkMovement.y;
-                float newVelocity = m_currentWalkMovement.y + m_initialJumpVelocity;
-                float averageVelocity = (previousVelocity + newVelocity) / 2.0f;
-
-                m_currentWalkMovement.y = averageVelocity;
-                m_currentRunMovement.y = averageVelocity;
+                m_currentMovement.y = m_initialJumpVelocity;
+                m_appliedMovement.y = m_initialJumpVelocity;
 
                 m_animator.SetBool(m_isJumpingHash, true);
             }
