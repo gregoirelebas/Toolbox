@@ -117,5 +117,5 @@ MonoBehaviour:
   m_moveSpeed: 3
   m_rotationSpeed: 15
   m_runFactor: 2
-  m_maxJumpHeight: 1
+  m_maxJumpHeight: 2.5
   m_maxJumpTime: 0.5

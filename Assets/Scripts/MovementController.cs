@@ -48,10 +48,6 @@ public class MovementController : MonoBehaviour
 
         m_isWalkingHash = Animator.StringToHash("isWalking");
         m_isRunningHash = Animator.StringToHash("isRunning");
-
-        float timeToApex = m_maxJumpTime / 2.0f;
-        m_gravity = (-2 * m_maxJumpHeight) / Mathf.Pow(timeToApex, 2);
-        m_initialJumpVelocity = (2 * m_maxJumpHeight) / timeToApex;
     }
 
     private void OnEnable()
@@ -80,6 +76,10 @@ public class MovementController : MonoBehaviour
 
     private void Update()
     {
+        float timeToApex = m_maxJumpTime / 2.0f;
+        m_gravity = -2.0f * m_maxJumpHeight / Mathf.Pow(timeToApex, 2);
+        m_initialJumpVelocity = 2.0f * m_maxJumpHeight / timeToApex;
+
         HandleRotation();
 
         if (m_isRunning)
@@ -152,8 +152,12 @@ public class MovementController : MonoBehaviour
         }
         else
         {
-            m_currentWalkMovement.y += m_gravity * Time.deltaTime;
-            m_currentRunMovement.y += m_gravity * Time.deltaTime;
+            float oldVelocity = m_currentWalkMovement.y;
+            float newVelocity = m_currentWalkMovement.y + m_gravity * Time.deltaTime;
+            float averageVelocity = (oldVelocity + newVelocity) / 2.0f;
+
+            m_currentWalkMovement.y = averageVelocity;
+            m_currentRunMovement.y = averageVelocity;
         }
     }
 
@@ -168,8 +172,12 @@ public class MovementController : MonoBehaviour
             {
                 m_isJumping = true;
 
-                m_currentWalkMovement.y = m_initialJumpVelocity;
-                m_currentRunMovement.y = m_initialJumpVelocity;
+                float previousVelocity = m_currentWalkMovement.y;
+                float newVelocity = m_currentWalkMovement.y + m_initialJumpVelocity;
+                float averageVelocity = (previousVelocity + newVelocity) / 2.0f;
+
+                m_currentWalkMovement.y = averageVelocity;
+                m_currentRunMovement.y = averageVelocity;
             }
             else if (m_isJumping && !m_isJumpInput)
             {
