@@ -10,9 +10,16 @@ public class MovementController : MonoBehaviour
     private const float GROUND_GRAVITY = -0.5f;
     private const float AIR_GRAVITY = -9.81f;
 
+    [Header("Basic movement")]
     [SerializeField] private float m_moveSpeed = 5.0f;
     [SerializeField] private float m_rotationSpeed = 10.0f;
+
+    [Header("Run")]
     [SerializeField] private float m_runFactor = 3.0f;
+
+    [Header("Jump")]
+    [SerializeField] private float m_maxJumpHeight = 2.0f;
+    [SerializeField] private float m_maxJumpTime = 1.0f;
 
     private PlayerInput m_playerInput = null;
     private CharacterController m_controller = null;
@@ -23,6 +30,11 @@ public class MovementController : MonoBehaviour
 
     private bool m_isMovement = false;
     private bool m_isRunning = false;
+
+    private bool m_isJumpInput = false;
+    private bool m_isJumping = false;
+    private float m_initialJumpVelocity = 10.0f;
+    private float m_gravity = AIR_GRAVITY;
 
     private Animator m_animator = null;
     private int m_isWalkingHash = -1;
@@ -36,6 +48,10 @@ public class MovementController : MonoBehaviour
 
         m_isWalkingHash = Animator.StringToHash("isWalking");
         m_isRunningHash = Animator.StringToHash("isRunning");
+
+        float timeToApex = m_maxJumpTime / 2.0f;
+        m_gravity = (-2 * m_maxJumpHeight) / Mathf.Pow(timeToApex, 2);
+        m_initialJumpVelocity = (2 * m_maxJumpHeight) / timeToApex;
     }
 
     private void OnEnable()
@@ -46,6 +62,8 @@ public class MovementController : MonoBehaviour
         m_playerInput.CharacterControls.Move.canceled += OnMoveInput;
         m_playerInput.CharacterControls.Run.performed += OnRun;
         m_playerInput.CharacterControls.Run.canceled += OnRun;
+        m_playerInput.CharacterControls.Jump.performed += OnJump;
+        m_playerInput.CharacterControls.Jump.canceled += OnJump;
     }
 
     private void OnDisable()
@@ -54,6 +72,8 @@ public class MovementController : MonoBehaviour
         m_playerInput.CharacterControls.Move.canceled -= OnMoveInput;
         m_playerInput.CharacterControls.Run.performed -= OnRun;
         m_playerInput.CharacterControls.Run.canceled -= OnRun;
+        m_playerInput.CharacterControls.Jump.performed -= OnJump;
+        m_playerInput.CharacterControls.Jump.canceled -= OnJump;
 
         m_playerInput.Disable();
     }
@@ -62,12 +82,13 @@ public class MovementController : MonoBehaviour
     {
         HandleRotation();
 
-        HandleGravity();
-
         if (m_isRunning)
             m_controller.Move(m_currentRunMovement * Time.deltaTime);
         else
             m_controller.Move(m_currentWalkMovement * Time.deltaTime);
+
+        HandleGravity();
+        HandleJump();
 
         HandleAnimations();
     }
@@ -86,6 +107,22 @@ public class MovementController : MonoBehaviour
         m_currentRunMovement.z = m_currentMovementInput.y * m_moveSpeed * m_runFactor;
 
         m_isMovement = m_currentMovementInput.x != 0.0f || m_currentMovementInput.y != 0.0f;
+    }
+
+    /// <summary>
+    /// Cache the run input as a boolean.
+    /// </summary>
+    private void OnRun(InputAction.CallbackContext context)
+    {
+        m_isRunning = context.ReadValueAsButton();
+    }
+
+    /// <summary>
+    /// Cache the jump input as a boolean.
+    /// </summary>
+    private void OnJump(InputAction.CallbackContext context)
+    {
+        m_isJumpInput = context.ReadValueAsButton();
     }
 
     /// <summary>
@@ -115,8 +152,29 @@ public class MovementController : MonoBehaviour
         }
         else
         {
-            m_currentWalkMovement.y += AIR_GRAVITY;
-            m_currentRunMovement.y += AIR_GRAVITY;
+            m_currentWalkMovement.y += m_gravity * Time.deltaTime;
+            m_currentRunMovement.y += m_gravity * Time.deltaTime;
+        }
+    }
+
+    /// <summary>
+    /// Set jump velocity if character is grounded.
+    /// </summary>
+    private void HandleJump()
+    {
+        if (m_controller.isGrounded)
+        {
+            if (!m_isJumping && m_isJumpInput)
+            {
+                m_isJumping = true;
+
+                m_currentWalkMovement.y = m_initialJumpVelocity;
+                m_currentRunMovement.y = m_initialJumpVelocity;
+            }
+            else if (m_isJumping && !m_isJumpInput)
+            {
+                m_isJumping = false;
+            }
         }
     }
 
@@ -137,13 +195,5 @@ public class MovementController : MonoBehaviour
             m_animator.SetBool(m_isRunningHash, true);
         else if (!m_isRunning && isAnimatorRunning)
             m_animator.SetBool(m_isRunningHash, false);
-    }
-
-    /// <summary>
-    /// Cache the run input as a boolean.
-    /// </summary>
-    private void OnRun(InputAction.CallbackContext context)
-    {
-        m_isRunning = context.ReadValueAsButton();
     }
 }
