@@ -20,6 +20,7 @@ public class MovementController : MonoBehaviour
     [Header("Jump")]
     [SerializeField] private float m_maxJumpHeight = 2.0f;
     [SerializeField] private float m_maxJumpTime = 1.0f;
+    [SerializeField] private float m_fallFactor = 2.0f;
 
     private PlayerInput m_playerInput = null;
     private CharacterController m_controller = null;
@@ -48,6 +49,10 @@ public class MovementController : MonoBehaviour
 
         m_isWalkingHash = Animator.StringToHash("isWalking");
         m_isRunningHash = Animator.StringToHash("isRunning");
+
+        float timeToApex = m_maxJumpTime / 2.0f;
+        m_gravity = -2.0f * m_maxJumpHeight / Mathf.Pow(timeToApex, 2);
+        m_initialJumpVelocity = 2.0f * m_maxJumpHeight / timeToApex;
     }
 
     private void OnEnable()
@@ -76,10 +81,6 @@ public class MovementController : MonoBehaviour
 
     private void Update()
     {
-        float timeToApex = m_maxJumpTime / 2.0f;
-        m_gravity = -2.0f * m_maxJumpHeight / Mathf.Pow(timeToApex, 2);
-        m_initialJumpVelocity = 2.0f * m_maxJumpHeight / timeToApex;
-
         HandleRotation();
 
         if (m_isRunning)
@@ -145,10 +146,21 @@ public class MovementController : MonoBehaviour
     /// </summary>
     private void HandleGravity()
     {
+        bool isFalling = m_currentWalkMovement.y <= 0.0f || !m_isJumpInput;
+
         if (m_controller.isGrounded)
         {
             m_currentWalkMovement.y = GROUND_GRAVITY;
             m_currentRunMovement.y = GROUND_GRAVITY;
+        }
+        else if (isFalling)
+        {
+            float previousVelocity = m_currentWalkMovement.y;
+            float newVelocity = m_currentWalkMovement.y + m_gravity * m_fallFactor * Time.deltaTime;
+            float averageVelocity = (previousVelocity + newVelocity) / 2.0f;
+
+            m_currentWalkMovement.y = averageVelocity;
+            m_currentRunMovement.y = averageVelocity;
         }
         else
         {
