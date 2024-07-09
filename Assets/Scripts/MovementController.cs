@@ -121,9 +121,9 @@ public class MovementController : MonoBehaviour
         else if (!m_isMovement && isAnimatorWalking)
             m_animator.SetBool(m_isWalkingHash, false);
 
-        if (m_isMovement && m_isRunning && !isAnimatorRunning)
+        if (m_isRunning && !isAnimatorRunning)
             m_animator.SetBool(m_isRunningHash, true);
-        else if (m_isMovement && !m_isRunning && isAnimatorRunning)
+        else if (!m_isRunning && isAnimatorRunning)
             m_animator.SetBool(m_isRunningHash, false);
     }
 
