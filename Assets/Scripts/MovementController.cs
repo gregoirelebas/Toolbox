@@ -44,16 +44,16 @@ public class MovementController : MonoBehaviour
 
         m_playerInput.CharacterControls.Move.performed += OnMoveInput;
         m_playerInput.CharacterControls.Move.canceled += OnMoveInput;
-        m_playerInput.CharacterControls.Sprint.performed += OnSprint;
-        m_playerInput.CharacterControls.Sprint.canceled += OnSprint;
+        m_playerInput.CharacterControls.Run.performed += OnRun;
+        m_playerInput.CharacterControls.Run.canceled += OnRun;
     }
 
     private void OnDisable()
     {
         m_playerInput.CharacterControls.Move.performed -= OnMoveInput;
         m_playerInput.CharacterControls.Move.canceled -= OnMoveInput;
-        m_playerInput.CharacterControls.Sprint.performed -= OnSprint;
-        m_playerInput.CharacterControls.Sprint.canceled -= OnSprint;
+        m_playerInput.CharacterControls.Run.performed -= OnRun;
+        m_playerInput.CharacterControls.Run.canceled -= OnRun;
 
         m_playerInput.Disable();
     }
@@ -127,7 +127,7 @@ public class MovementController : MonoBehaviour
             m_animator.SetBool(m_isRunningHash, false);
     }
 
-    private void OnSprint(InputAction.CallbackContext context)
+    private void OnRun(InputAction.CallbackContext context)
     {
         m_isRunning = context.ReadValueAsButton();
     }
