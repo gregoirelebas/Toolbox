@@ -9,20 +9,28 @@ public class MovementController : MonoBehaviour
 {
     [SerializeField] private float m_moveSpeed = 5.0f;
     [SerializeField] private float m_rotationSpeed = 10.0f;
+    [SerializeField] private float m_sprintFactor = 3.0f;
 
     private PlayerInput m_playerInput = null;
     private CharacterController m_controller = null;
-    private Animator m_animator = null;
 
     private Vector2 m_currentMovementInput = Vector2.zero;
     private Vector3 m_currentMovement = Vector3.zero;
+    private Vector3 m_currentSprintMovement = Vector3.zero;
+
     private bool m_isMoving = false;
+    private bool m_isSprinting = false;
+
+    private Animator m_animator = null;
+    private int m_speedHash = -1;
 
     private void Awake()
     {
         m_playerInput = new PlayerInput();
         m_controller = GetComponent<CharacterController>();
         m_animator = GetComponent<Animator>();
+
+        m_speedHash = Animator.StringToHash("Speed");
     }
 
     private void OnEnable()
@@ -31,17 +39,29 @@ public class MovementController : MonoBehaviour
 
         m_playerInput.CharacterControls.Move.performed += OnMoveInput;
         m_playerInput.CharacterControls.Move.canceled += OnMoveInput;
+        m_playerInput.CharacterControls.Sprint.performed += OnSprint;
+        m_playerInput.CharacterControls.Sprint.canceled += OnSprint;
     }
 
     private void OnDisable()
     {
+        m_playerInput.CharacterControls.Move.performed -= OnMoveInput;
+        m_playerInput.CharacterControls.Move.canceled -= OnMoveInput;
+        m_playerInput.CharacterControls.Sprint.performed -= OnSprint;
+        m_playerInput.CharacterControls.Sprint.canceled -= OnSprint;
+
         m_playerInput.Disable();
     }
 
     private void Update()
     {
         HandleRotation();
-        m_controller.Move(m_currentMovement * m_moveSpeed * Time.deltaTime);
+
+        if (m_isSprinting)
+            m_controller.Move(m_currentSprintMovement * Time.deltaTime);
+        else
+            m_controller.Move(m_currentMovement * Time.deltaTime);
+
         HandleAnimations();
     }
 
@@ -49,8 +69,11 @@ public class MovementController : MonoBehaviour
     {
         m_currentMovementInput = context.ReadValue<Vector2>();
 
-        m_currentMovement.x = m_currentMovementInput.x;
-        m_currentMovement.z = m_currentMovementInput.y;
+        m_currentMovement.x = m_currentMovementInput.x * m_moveSpeed;
+        m_currentMovement.z = m_currentMovementInput.y * m_moveSpeed;
+
+        m_currentSprintMovement.x = m_currentMovementInput.x * m_moveSpeed * m_sprintFactor;
+        m_currentSprintMovement.z = m_currentMovementInput.y * m_moveSpeed * m_sprintFactor;
 
         m_isMoving = m_currentMovementInput.x != 0.0f || m_currentMovementInput.y != 0.0f;
     }
@@ -70,8 +93,20 @@ public class MovementController : MonoBehaviour
     private void HandleAnimations()
     {
         if (m_isMoving)
-            m_animator.SetFloat("Speed", 1.0f);
-        else if (!m_isMoving)
-            m_animator.SetFloat("Speed", 0.0f);
+        {
+            if (m_isSprinting)
+                m_animator.SetFloat(m_speedHash, 1.0f);
+            else
+                m_animator.SetFloat(m_speedHash, 0.25f);
+        }
+        else
+        {
+            m_animator.SetFloat(m_speedHash, 0.0f);
+        }
+    }
+
+    private void OnSprint(InputAction.CallbackContext context)
+    {
+        m_isSprinting = context.ReadValueAsButton();
     }
 }
