@@ -72,6 +72,9 @@ public class MovementController : MonoBehaviour
         HandleAnimations();
     }
 
+    /// <summary>
+    /// Set walk and run movement using the context input read.
+    /// </summary>
     private void OnMoveInput(InputAction.CallbackContext context)
     {
         m_currentMovementInput = context.ReadValue<Vector2>();
@@ -85,6 +88,9 @@ public class MovementController : MonoBehaviour
         m_isMovement = m_currentMovementInput.x != 0.0f || m_currentMovementInput.y != 0.0f;
     }
 
+    /// <summary>
+    /// Rotate the character to face the movement direction.
+    /// </summary>
     private void HandleRotation()
     {
         if (!m_isMovement)
@@ -97,6 +103,9 @@ public class MovementController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, m_rotationSpeed * Time.deltaTime);
     }
 
+    /// <summary>
+    /// Set gravity if grounded or increase gravity if mid air.
+    /// </summary>
     private void HandleGravity()
     {
         if (m_controller.isGrounded)
@@ -111,6 +120,9 @@ public class MovementController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Set walk and run animation variables.
+    /// </summary>
     private void HandleAnimations()
     {
         bool isAnimatorWalking = m_animator.GetBool(m_isWalkingHash);
@@ -127,6 +139,9 @@ public class MovementController : MonoBehaviour
             m_animator.SetBool(m_isRunningHash, false);
     }
 
+    /// <summary>
+    /// Cache the run input as a boolean.
+    /// </summary>
     private void OnRun(InputAction.CallbackContext context)
     {
         m_isRunning = context.ReadValueAsButton();
