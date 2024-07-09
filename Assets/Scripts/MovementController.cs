@@ -7,6 +7,9 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Animator))]
 public class MovementController : MonoBehaviour
 {
+    private const float GROUND_GRAVITY = -0.5f;
+    private const float AIR_GRAVITY = -9.81f;
+
     [SerializeField] private float m_moveSpeed = 5.0f;
     [SerializeField] private float m_rotationSpeed = 10.0f;
     [SerializeField] private float m_sprintFactor = 3.0f;
@@ -57,6 +60,8 @@ public class MovementController : MonoBehaviour
     {
         HandleRotation();
 
+        HandleGravity();
+
         if (m_isSprinting)
             m_controller.Move(m_currentSprintMovement * Time.deltaTime);
         else
@@ -88,6 +93,20 @@ public class MovementController : MonoBehaviour
 
         Quaternion targetRotation = Quaternion.LookRotation(positionToLook);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, m_rotationSpeed * Time.deltaTime);
+    }
+
+    private void HandleGravity()
+    {
+        if (m_controller.isGrounded)
+        {
+            m_currentMovement.y = GROUND_GRAVITY;
+            m_currentSprintMovement.y = GROUND_GRAVITY;
+        }
+        else
+        {
+            m_currentMovement.y = AIR_GRAVITY;
+            m_currentSprintMovement.y = AIR_GRAVITY;
+        }
     }
 
     private void HandleAnimations()
