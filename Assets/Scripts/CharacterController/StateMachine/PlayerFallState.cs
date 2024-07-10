@@ -8,6 +8,16 @@ public class PlayerFallState : PlayerBaseState
     {
     }
 
+    public override void EnterState()
+    {
+        m_data.Animator.SetBool(m_data.IsFallingHash, true);
+    }
+
+    public override void ExitState()
+    {
+        m_data.Animator.SetBool(m_data.IsFallingHash, false);
+    }
+
     public override PlayerState GetNextState()
     {
         if (m_data.CharacterController.isGrounded)

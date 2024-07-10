@@ -39,6 +39,7 @@ public class PlayerStateData
     private int m_isWalkingHash = -1;
     private int m_isRunningHash = -1;
     private int m_isJumpingHash = -1;
+    private int m_isFallingHash = -1;
 
     public CharacterController CharacterController => m_controller;
 
@@ -62,6 +63,7 @@ public class PlayerStateData
     public int IsWalkingHash => m_isWalkingHash;
     public int IsRunningHash => m_isRunningHash;
     public int IsJumpingHash => m_isJumpingHash;
+    public int IsFallingHash => m_isFallingHash;
 
     /// <summary>
     /// Set the character controller for states to use.
@@ -120,6 +122,7 @@ public class PlayerStateData
         m_isWalkingHash = Animator.StringToHash("isWalking");
         m_isRunningHash = Animator.StringToHash("isRunning");
         m_isJumpingHash = Animator.StringToHash("isJumping");
+        m_isFallingHash = Animator.StringToHash("isFalling");
     }
 
     /// <summary>
