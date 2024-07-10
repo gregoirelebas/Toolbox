@@ -800,11 +800,42 @@ PrefabInstance:
       propertyPath: m_Name
       value: Jammo
       objectReference: {fileID: 0}
+    - target: {fileID: 8463731453038702306, guid: d804fd7c8a350ad4bae5e3890e7ac483, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2584674470822910759, guid: d804fd7c8a350ad4bae5e3890e7ac483, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 759965450161887511}
   m_SourcePrefab: {fileID: 100100000, guid: d804fd7c8a350ad4bae5e3890e7ac483, type: 3}
+--- !u!1 &759965450161887510 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2584674470822910759, guid: d804fd7c8a350ad4bae5e3890e7ac483, type: 3}
+  m_PrefabInstance: {fileID: 759965450161887509}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &759965450161887511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 759965450161887510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3fd5c38202e2a94da8429474c9ead44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_data:
+    m_moveSpeed: 3
+    m_rotationSpeed: 15
+    m_runFactor: 2
+    m_maxJumpHeight: 2
+    m_maxJumpTime: 0.75
+    m_fallFactor: 1.75
 --- !u!1001 &1705911415095701159
 PrefabInstance:
   m_ObjectHideFlags: 0

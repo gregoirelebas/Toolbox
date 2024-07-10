@@ -4,8 +4,11 @@ using UnityEngine;
 
 public abstract class PlayerBaseState : BaseState<PlayerState>
 {
-    public PlayerBaseState(PlayerState key) : base(key)
+    protected PlayerStateData m_data = null;
+
+    public PlayerBaseState(PlayerState key, PlayerStateData data) : base(key)
     {
+        m_data = data;
     }
 
     public abstract override void EnterState();
@@ -27,6 +30,4 @@ public abstract class PlayerBaseState : BaseState<PlayerState>
     public abstract void SetSuperState();
 
     public abstract void SetSubState();
-
-    public abstract void CheckSwitchState();
 }

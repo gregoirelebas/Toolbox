@@ -4,28 +4,25 @@ using UnityEngine;
 
 public class PlayerJumpState : PlayerBaseState
 {
-    public PlayerJumpState(PlayerState key) : base(key)
+    public PlayerJumpState(PlayerState key, PlayerStateData data) : base(key, data)
     {
-    }
-
-    public override void CheckSwitchState()
-    {
-        throw new System.NotImplementedException();
     }
 
     public override void EnterState()
     {
-        throw new System.NotImplementedException();
+        m_data.SetGravity(m_data.JumpVelocity);
     }
 
     public override void ExitState()
     {
-        throw new System.NotImplementedException();
     }
 
     public override PlayerState GetNextState()
     {
-        throw new System.NotImplementedException();
+        if (m_data.Controller.isGrounded)
+            return PlayerState.Grounded;
+
+        return PlayerState.Jump;
     }
 
     public override void InitializeSubState()
@@ -60,6 +57,14 @@ public class PlayerJumpState : PlayerBaseState
 
     public override void UpdateState()
     {
-        throw new System.NotImplementedException();
+        float previousVelocity = m_data.CurrentMovement.y;
+
+        bool isFalling = m_data.CurrentMovement.y <= 0.0f;
+        if (isFalling)
+            m_data.SetCurrentMovementGravity(m_data.CurrentMovement.y + m_data.JumpGravity * m_data.FallFactor * Time.deltaTime);
+        else
+            m_data.SetCurrentMovementGravity(m_data.CurrentMovement.y + m_data.JumpGravity * Time.deltaTime);
+
+        m_data.SetAppliedMovementGravity((previousVelocity + m_data.CurrentMovement.y) / 2.0f);
     }
 }

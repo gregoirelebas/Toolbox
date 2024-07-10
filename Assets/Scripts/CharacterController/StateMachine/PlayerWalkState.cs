@@ -4,13 +4,8 @@ using UnityEngine;
 
 public class PlayerWalkState : PlayerBaseState
 {
-    public PlayerWalkState(PlayerState key) : base(key)
+    public PlayerWalkState(PlayerState key, PlayerStateData data) : base(key, data)
     {
-    }
-
-    public override void CheckSwitchState()
-    {
-        throw new System.NotImplementedException();
     }
 
     public override void EnterState()

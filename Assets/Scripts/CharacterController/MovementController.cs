@@ -161,7 +161,7 @@ public class MovementController : MonoBehaviour
     /// </summary>
     private void HandleGravity()
     {
-        bool isFalling = m_currentMovement.y <= 0.0f || !m_isJumpInput;
+        bool isFalling = m_currentMovement.y <= 0.0f;
 
         if (m_controller.isGrounded)
         {

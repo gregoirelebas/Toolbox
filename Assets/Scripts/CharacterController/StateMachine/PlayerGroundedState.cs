@@ -4,28 +4,27 @@ using UnityEngine;
 
 public class PlayerGroundedState : PlayerBaseState
 {
-    public PlayerGroundedState(PlayerState key) : base(key)
-    {
-    }
+    private const float GROUND_GRAVITY = -0.5f;
 
-    public override void CheckSwitchState()
+    public PlayerGroundedState(PlayerState key, PlayerStateData data) : base(key, data)
     {
-        throw new System.NotImplementedException();
     }
 
     public override void EnterState()
     {
-        throw new System.NotImplementedException();
+        m_data.SetGravity(GROUND_GRAVITY);
     }
 
     public override void ExitState()
     {
-        throw new System.NotImplementedException();
     }
 
     public override PlayerState GetNextState()
     {
-        throw new System.NotImplementedException();
+        if (m_data.IsJumpInput)
+            return PlayerState.Jump;
+
+        return PlayerState.Grounded;
     }
 
     public override void InitializeSubState()
@@ -60,6 +59,6 @@ public class PlayerGroundedState : PlayerBaseState
 
     public override void UpdateState()
     {
-        throw new System.NotImplementedException();
+
     }
 }

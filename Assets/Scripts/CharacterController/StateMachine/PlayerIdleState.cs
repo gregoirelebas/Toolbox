@@ -4,13 +4,8 @@ using UnityEngine;
 
 public class PlayerIdleState : PlayerBaseState
 {
-    public PlayerIdleState(PlayerState key) : base(key)
+    public PlayerIdleState(PlayerState key, PlayerStateData data) : base(key, data)
     {
-    }
-
-    public override void CheckSwitchState()
-    {
-        throw new System.NotImplementedException();
     }
 
     public override void EnterState()
