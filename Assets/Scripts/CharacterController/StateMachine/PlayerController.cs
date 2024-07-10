@@ -67,6 +67,9 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        m_cameraMovement = ConverToCameraSpace(m_data.AppliedMovement);
+        m_cameraMovement.y = m_data.AppliedMovement.y;
+
         HandleRotation();
         HandleMovement();
 
@@ -94,11 +97,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void HandleRotation()
     {
-        if (!m_data.IsMovement)
-            return;
-
         Vector3 positionToLook = m_cameraMovement;
         positionToLook.y = 0.0f;
+
+        if (positionToLook == Vector3.zero)
+            return;
 
         Quaternion targetRotation = Quaternion.LookRotation(positionToLook);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, m_data.RotationSpeed * Time.deltaTime);
@@ -109,8 +112,6 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void HandleMovement()
     {
-        m_cameraMovement = ConverToCameraSpace(m_data.AppliedMovement);
-        m_cameraMovement.y = m_data.AppliedMovement.y;
         m_controller.Move(m_cameraMovement * Time.deltaTime);
     }
 
