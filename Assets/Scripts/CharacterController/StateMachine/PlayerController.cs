@@ -8,7 +8,8 @@ public enum PlayerState
     Idle,
     Walk,
     Run,
-    Jump
+    Jump,
+    Fall
 }
 
 [RequireComponent(typeof(CharacterController))]
@@ -83,6 +84,7 @@ public class PlayerController : MonoBehaviour
         groundedState.AddSubState(new PlayerRunState(PlayerState.Run, m_data));
 
         m_stateManager.AddState(new PlayerJumpState(PlayerState.Jump, m_data));
+        m_stateManager.AddState(new PlayerFallState(PlayerState.Fall, m_data));
     }
 
     /// <summary>

@@ -25,17 +25,15 @@ public class PlayerJumpState : PlayerBaseState
     {
         if (m_data.CharacterController.isGrounded)
             return PlayerState.Grounded;
+        else if (m_data.CurrentMovement.y <= 0.0f)
+            return PlayerState.Fall;
 
         return PlayerState.Jump;
     }
 
     public override void UpdateState()
     {
-        bool isFalling = m_data.CurrentMovement.y <= 0.0f;
-        if (isFalling)
-            m_data.SetVerticalCurrentMovement(m_data.CurrentMovement.y + m_data.JumpGravity * m_data.FallFactor * Time.deltaTime);
-        else
-            m_data.SetVerticalCurrentMovement(m_data.CurrentMovement.y + m_data.JumpGravity * Time.deltaTime);
+        m_data.SetVerticalCurrentMovement(m_data.CurrentMovement.y + m_data.JumpGravity * Time.deltaTime);
 
         float previousVelocity = m_data.CurrentMovement.y;
         m_data.SetVerticalAppliedMovement((previousVelocity + m_data.CurrentMovement.y) / 2.0f);

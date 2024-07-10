@@ -2,7 +2,7 @@
 
 public abstract class BaseSuperState<StateKey> : BaseState<StateKey> where StateKey : System.Enum
 {
-    private StateKey m_entryState;
+    protected StateKey m_entryState;
     protected StateManager<StateKey> m_manager = new StateManager<StateKey>();
 
     public BaseSuperState(StateKey key, StateKey entryState) : base(key)
