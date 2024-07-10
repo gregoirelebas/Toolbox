@@ -21,4 +21,9 @@ public class PlayerRunState : PlayerBaseState
 
         return PlayerState.Run;
     }
+
+    public override void UpdateState()
+    {
+        m_data.SetHorizontalAppliedMovement(m_data.RunFactor);
+    }
 }

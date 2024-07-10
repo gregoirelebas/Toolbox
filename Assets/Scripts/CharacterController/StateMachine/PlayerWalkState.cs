@@ -21,4 +21,9 @@ public class PlayerWalkState : PlayerBaseState
 
         return PlayerState.Walk;
     }
+
+    public override void UpdateState()
+    {
+        m_data.SetHorizontalAppliedMovement(1.0f);
+    }
 }

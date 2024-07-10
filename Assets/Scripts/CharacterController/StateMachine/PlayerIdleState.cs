@@ -8,6 +8,8 @@ public class PlayerIdleState : PlayerBaseState
 
     public override void EnterState()
     {
+        m_data.SetHorizontalAppliedMovement(0.0f);
+
         m_data.Animator.SetBool(m_data.IsWalkingHash, false);
         m_data.Animator.SetBool(m_data.IsRunningHash, false);
     }

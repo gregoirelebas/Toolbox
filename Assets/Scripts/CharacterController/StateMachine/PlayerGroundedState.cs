@@ -15,7 +15,8 @@ public class PlayerGroundedState : BaseSuperState<PlayerState>
     {
         base.EnterState();
 
-        m_data.SetGravity(GROUND_GRAVITY);
+        m_data.SetVerticalCurrentMovement(GROUND_GRAVITY);
+        m_data.SetVerticalAppliedMovement(GROUND_GRAVITY);
     }
 
     public override PlayerState GetNextState()

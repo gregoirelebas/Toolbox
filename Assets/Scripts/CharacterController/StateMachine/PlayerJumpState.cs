@@ -10,7 +10,8 @@ public class PlayerJumpState : PlayerBaseState
 
     public override void EnterState()
     {
-        m_data.SetGravity(m_data.JumpVelocity);
+        m_data.SetVerticalCurrentMovement(m_data.JumpVelocity);
+        m_data.SetVerticalAppliedMovement(m_data.JumpVelocity);
 
         m_data.Animator.SetBool(m_data.IsJumpingHash, true);
     }
@@ -22,7 +23,7 @@ public class PlayerJumpState : PlayerBaseState
 
     public override PlayerState GetNextState()
     {
-        if (m_data.Controller.isGrounded)
+        if (m_data.CharacterController.isGrounded)
             return PlayerState.Grounded;
 
         return PlayerState.Jump;
@@ -30,14 +31,15 @@ public class PlayerJumpState : PlayerBaseState
 
     public override void UpdateState()
     {
-        float previousVelocity = m_data.CurrentMovement.y;
-
         bool isFalling = m_data.CurrentMovement.y <= 0.0f;
         if (isFalling)
-            m_data.SetCurrentMovementGravity(m_data.CurrentMovement.y + m_data.JumpGravity * m_data.FallFactor * Time.deltaTime);
+            m_data.SetVerticalCurrentMovement(m_data.CurrentMovement.y + m_data.JumpGravity * m_data.FallFactor * Time.deltaTime);
         else
-            m_data.SetCurrentMovementGravity(m_data.CurrentMovement.y + m_data.JumpGravity * Time.deltaTime);
+            m_data.SetVerticalCurrentMovement(m_data.CurrentMovement.y + m_data.JumpGravity * Time.deltaTime);
 
-        m_data.SetAppliedMovementGravity((previousVelocity + m_data.CurrentMovement.y) / 2.0f);
+        float previousVelocity = m_data.CurrentMovement.y;
+        m_data.SetVerticalAppliedMovement((previousVelocity + m_data.CurrentMovement.y) / 2.0f);
+
+        m_data.SetHorizontalAppliedMovement(m_data.IsRunning ? m_data.RunFactor : 1.0f);
     }
 }

@@ -40,9 +40,11 @@ public class PlayerStateData
     private int m_isRunningHash = -1;
     private int m_isJumpingHash = -1;
 
-    public CharacterController Controller => m_controller;
+    public CharacterController CharacterController => m_controller;
 
+    public float MoveSpeed => m_moveSpeed;
     public float RotationSpeed => m_rotationSpeed;
+    public float RunFactor => m_runFactor;
 
     public Vector3 CurrentMovement => m_currentMovement;
     public Vector3 AppliedMovement => m_appliedMovement;
@@ -121,18 +123,9 @@ public class PlayerStateData
     }
 
     /// <summary>
-    /// Set both current and applied movement y vector value.
-    /// </summary>
-    public void SetGravity(float gravity)
-    {
-        m_currentMovement.y = gravity;
-        m_appliedMovement.y = gravity;
-    }
-
-    /// <summary>
     /// Set current movement y vector value.
     /// </summary>
-    public void SetCurrentMovementGravity(float gravity)
+    public void SetVerticalCurrentMovement(float gravity)
     {
         m_currentMovement.y = gravity;
     }
@@ -140,8 +133,17 @@ public class PlayerStateData
     /// <summary>
     /// Set applied movement y vector value.
     /// </summary>
-    public void SetAppliedMovementGravity(float gravity)
+    public void SetVerticalAppliedMovement(float gravity)
     {
         m_appliedMovement.y = gravity;
+    }
+
+    /// <summary>
+    /// Set applied movement x and z vector value using current movement and speed.
+    /// </summary>
+    public void SetHorizontalAppliedMovement(float speed)
+    {
+        m_appliedMovement.x = m_currentMovement.x * speed;
+        m_appliedMovement.z = m_currentMovement.z * speed;
     }
 }
