@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
     private CharacterController m_controller = null;
     private Animator m_animator = null;
 
+    private Vector3 m_cameraMovement = Vector3.zero;
+
     private void Awake()
     {
         m_playerInput = new PlayerInput();
@@ -95,7 +97,7 @@ public class PlayerController : MonoBehaviour
         if (!m_data.IsMovement)
             return;
 
-        Vector3 positionToLook = m_data.CurrentMovement;
+        Vector3 positionToLook = m_cameraMovement;
         positionToLook.y = 0.0f;
 
         Quaternion targetRotation = Quaternion.LookRotation(positionToLook);
@@ -107,6 +109,25 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void HandleMovement()
     {
-        m_controller.Move(m_data.AppliedMovement * Time.deltaTime);
+        m_cameraMovement = ConverToCameraSpace(m_data.AppliedMovement);
+        m_cameraMovement.y = m_data.AppliedMovement.y;
+        m_controller.Move(m_cameraMovement * Time.deltaTime);
+    }
+
+    private Vector3 ConverToCameraSpace(Vector3 vector)
+    {
+        Vector3 cameraRight = Camera.main.transform.right;
+        Vector3 cameraForward = Camera.main.transform.forward;
+
+        cameraRight.y = 0.0f;
+        cameraForward.y = 0.0f;
+
+        cameraRight = cameraRight.normalized;
+        cameraForward = cameraForward.normalized;
+
+        Vector3 xProduct = cameraRight * vector.x;
+        Vector3 zProduct = cameraForward * vector.z;
+
+        return xProduct + zProduct;
     }
 }
