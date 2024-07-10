@@ -5,14 +5,6 @@ using UnityEngine.Assertions;
 
 namespace StateMachineExamples
 {
-    public enum ExplosionState
-    {
-        Idle,
-        Loading,
-        Explosion,
-        Cooldown
-    }
-
     [System.Serializable]
     public class ExplodingCubeState : BaseState<ExplosionState>
     {
@@ -63,18 +55,6 @@ namespace StateMachineExamples
                 default:
                     throw new System.NotImplementedException();
             }
-        }
-
-        public override void OnTriggerEnter(Collider other)
-        {
-        }
-
-        public override void OnTriggerExit(Collider other)
-        {
-        }
-
-        public override void OnTriggerStay(Collider other)
-        {
         }
 
         public override void UpdateState()
