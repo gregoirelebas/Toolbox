@@ -52,6 +52,7 @@ public class PlayerStateData
     public float JumpVelocity => m_initialJumpVelocity;
 
     public bool IsMovement => m_isMovement;
+    public bool IsRunning => m_isRunning;
     public bool IsJumpInput => m_isJumpInput;
     public bool IsJumping => m_isJumping;
 

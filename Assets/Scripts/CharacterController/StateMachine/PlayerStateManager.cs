@@ -13,9 +13,11 @@ public enum PlayerState
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Animator))]
-public class PlayerStateManager : StateManager<PlayerState>
+public class PlayerStateManager : MonoBehaviour
 {
     [SerializeField] private PlayerStateData m_data = new PlayerStateData();
+
+    private StateManager<PlayerState> m_stateManager = new StateManager<PlayerState>();
 
     private PlayerInput m_playerInput = null;
     private CharacterController m_controller = null;
@@ -32,12 +34,12 @@ public class PlayerStateManager : StateManager<PlayerState>
         m_data.ComputeJumpGravityAndVelocity();
 
         CreateStates();
-
-        m_currentState = m_states[PlayerState.Grounded];
     }
 
     private void OnEnable()
     {
+        m_stateManager.SetEntryState(PlayerState.Grounded);
+
         m_playerInput.Enable();
 
         m_playerInput.CharacterControls.Move.performed += m_data.OnMoveInput;
@@ -60,12 +62,12 @@ public class PlayerStateManager : StateManager<PlayerState>
         m_playerInput.Disable();
     }
 
-    protected override void Update()
+    private void Update()
     {
+        m_stateManager.Update();
+
         HandleRotation();
         HandleMovement();
-
-        base.Update();
     }
 
     /// <summary>
@@ -73,11 +75,14 @@ public class PlayerStateManager : StateManager<PlayerState>
     /// </summary>
     private void CreateStates()
     {
-        m_states.Add(PlayerState.Grounded, new PlayerGroundedState(PlayerState.Grounded, m_data));
-        m_states.Add(PlayerState.Idle, new PlayerIdleState(PlayerState.Idle, m_data));
-        m_states.Add(PlayerState.Walk, new PlayerWalkState(PlayerState.Walk, m_data));
-        m_states.Add(PlayerState.Run, new PlayerRunState(PlayerState.Run, m_data));
-        m_states.Add(PlayerState.Jump, new PlayerJumpState(PlayerState.Jump, m_data));
+        BaseSuperState<PlayerState> groundedState = new PlayerGroundedState(PlayerState.Grounded, PlayerState.Idle, m_data);
+        m_stateManager.AddState(groundedState);
+
+        groundedState.AddSubState(new PlayerIdleState(PlayerState.Idle, m_data));
+        groundedState.AddSubState(new PlayerWalkState(PlayerState.Walk, m_data));
+        groundedState.AddSubState(new PlayerRunState(PlayerState.Run, m_data));
+
+        m_stateManager.AddState(new PlayerJumpState(PlayerState.Jump, m_data));
     }
 
     /// <summary>

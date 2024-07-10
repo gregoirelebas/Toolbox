@@ -1,60 +1,18 @@
 //Script created by Grégoire Lebas. See more at https://github.com/gregoirelebas
 
-using UnityEngine;
-
 public class PlayerWalkState : PlayerBaseState
 {
     public PlayerWalkState(PlayerState key, PlayerStateData data) : base(key, data)
     {
     }
 
-    public override void EnterState()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void ExitState()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public override PlayerState GetNextState()
     {
-        throw new System.NotImplementedException();
-    }
+        if (!m_data.IsMovement)
+            return PlayerState.Idle;
+        else if (m_data.IsRunning)
+            return PlayerState.Run;
 
-    public override void InitializeSubState()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void OnTriggerEnter(Collider other)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void OnTriggerExit(Collider other)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void OnTriggerStay(Collider other)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void SetSubState()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void SetSuperState()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void UpdateState()
-    {
-        throw new System.NotImplementedException();
+        return PlayerState.Walk;
     }
 }

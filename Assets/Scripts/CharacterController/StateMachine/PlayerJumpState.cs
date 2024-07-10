@@ -13,46 +13,12 @@ public class PlayerJumpState : PlayerBaseState
         m_data.SetGravity(m_data.JumpVelocity);
     }
 
-    public override void ExitState()
-    {
-    }
-
     public override PlayerState GetNextState()
     {
         if (m_data.Controller.isGrounded)
             return PlayerState.Grounded;
 
         return PlayerState.Jump;
-    }
-
-    public override void InitializeSubState()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void OnTriggerEnter(Collider other)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void OnTriggerExit(Collider other)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void OnTriggerStay(Collider other)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void SetSubState()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void SetSuperState()
-    {
-        throw new System.NotImplementedException();
     }
 
     public override void UpdateState()
