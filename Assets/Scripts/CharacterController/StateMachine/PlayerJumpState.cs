@@ -11,6 +11,13 @@ public class PlayerJumpState : PlayerBaseState
     public override void EnterState()
     {
         m_data.SetGravity(m_data.JumpVelocity);
+
+        m_data.Animator.SetBool(m_data.IsJumpingHash, true);
+    }
+
+    public override void ExitState()
+    {
+        m_data.Animator.SetBool(m_data.IsJumpingHash, false);
     }
 
     public override PlayerState GetNextState()

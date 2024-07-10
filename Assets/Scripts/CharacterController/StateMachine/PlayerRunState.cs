@@ -6,6 +6,12 @@ public class PlayerRunState : PlayerBaseState
     {
     }
 
+    public override void EnterState()
+    {
+        m_data.Animator.SetBool(m_data.IsWalkingHash, true);
+        m_data.Animator.SetBool(m_data.IsRunningHash, true);
+    }
+
     public override PlayerState GetNextState()
     {
         if (!m_data.IsMovement)

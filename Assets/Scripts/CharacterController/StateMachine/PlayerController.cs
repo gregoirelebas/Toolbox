@@ -13,7 +13,7 @@ public enum PlayerState
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Animator))]
-public class PlayerStateManager : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerStateData m_data = new PlayerStateData();
 
@@ -64,10 +64,10 @@ public class PlayerStateManager : MonoBehaviour
 
     private void Update()
     {
-        m_stateManager.Update();
-
         HandleRotation();
         HandleMovement();
+
+        m_stateManager.Update();
     }
 
     /// <summary>

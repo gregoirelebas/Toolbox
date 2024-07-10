@@ -56,6 +56,11 @@ public class PlayerStateData
     public bool IsJumpInput => m_isJumpInput;
     public bool IsJumping => m_isJumping;
 
+    public Animator Animator => m_animator;
+    public int IsWalkingHash => m_isWalkingHash;
+    public int IsRunningHash => m_isRunningHash;
+    public int IsJumpingHash => m_isJumpingHash;
+
     /// <summary>
     /// Set the character controller for states to use.
     /// </summary>
