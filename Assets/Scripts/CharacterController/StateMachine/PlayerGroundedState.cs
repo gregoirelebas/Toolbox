@@ -34,7 +34,7 @@ public class PlayerGroundedState : PlayerSuperState
         if (m_data.IsJumpInput)
             return PlayerState.Jump;
 
-        if (!m_data.CharacterController.isGrounded)
+        if (!m_data.IsCharacterGrounded)
             return PlayerState.Fall;
 
         return PlayerState.Grounded;

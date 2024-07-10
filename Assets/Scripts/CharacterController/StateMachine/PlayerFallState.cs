@@ -20,7 +20,7 @@ public class PlayerFallState : PlayerBaseState
 
     public override PlayerState GetNextState()
     {
-        if (m_data.CharacterController.isGrounded)
+        if (m_data.IsCharacterGrounded)
             return PlayerState.Grounded;
 
         return PlayerState.Fall;

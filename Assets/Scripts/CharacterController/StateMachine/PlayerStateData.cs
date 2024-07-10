@@ -41,8 +41,6 @@ public class PlayerStateData
     private int m_isJumpingHash = -1;
     private int m_isFallingHash = -1;
 
-    public CharacterController CharacterController => m_controller;
-
     public float MoveSpeed => m_moveSpeed;
     public float RotationSpeed => m_rotationSpeed;
     public float RunFactor => m_runFactor;
@@ -53,6 +51,8 @@ public class PlayerStateData
     public float JumpGravity => m_jumpGravity;
     public float FallFactor => m_fallFactor;
     public float JumpVelocity => m_initialJumpVelocity;
+
+    public bool IsCharacterGrounded => m_controller.isGrounded;
 
     public bool IsMovement => m_isMovement;
     public bool IsRunning => m_isRunning;
